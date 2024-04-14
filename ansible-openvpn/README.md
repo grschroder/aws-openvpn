@@ -13,6 +13,16 @@ SSH_KEY_NAME       =
 PUBLIC_SUBNET_A_ID =
 ```
 
+Com as variáveis preenchidas, crie o ansible-server:
+
+```bash
+terraform plan
+```
+
+```bash
+terraform apply
+```
+
 Após a criação do ansible-server, você poderá acessar e configurar o inventário executando o playbook config-inventory.yml:
 
 ```bash
