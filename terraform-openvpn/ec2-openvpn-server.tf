@@ -1,3 +1,13 @@
+resource "aws_eip" "eip-openvpn-server" {
+  instance = aws_instance.ec2-openvpn-server.id
+  domain   = "vpc"
+}
+
+resource "aws_eip_association" "eip_assoc-openvpn-server" {
+  instance_id   = aws_instance.ec2-openvpn-server.id
+  allocation_id = aws_eip.eip-openvpn-server.id
+}
+
 resource "aws_instance" "ec2-openvpn-server" {
   ami               = data.aws_ami.ami-ubuntu22-server.id
   instance_type     = "t2.micro"

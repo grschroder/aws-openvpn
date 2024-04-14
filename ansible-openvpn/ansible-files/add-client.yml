@@ -1,0 +1,48 @@
+---
+- hosts: openvpn-server
+  become: yes
+  gather_facts: no
+  
+  tasks:
+
+    - name: Copying ta.key
+      ansible.builtin.copy:        
+        src: /usr/share/easy-rsa/ta.key
+        dest: /home/ubuntu/client-configs/keys/
+        remote_src: yes
+    
+    - name: Copying ca.crt
+      ansible.builtin.copy:        
+        src: /etc/openvpn/server/ca.crt
+        dest: /home/ubuntu/client-configs/keys/
+        remote_src: yes
+
+    - name: This command will create a new openvpn client certificate request for {{ client_name }}
+      ansible.builtin.shell:
+      args:
+        chdir: /usr/share/easy-rsa/
+        cmd: ./easyrsa build-client-full {{ client_name }} nopass
+      
+    - name: Copy client configuration script
+      ansible.builtin.copy:
+        src: /etc/ansible/playbooks/files/make_config.sh
+        dest: /usr/share/easy-rsa/make_config.sh
+        mode: 750
+
+    - name: Copying {{ client_name }}.key
+      ansible.builtin.copy:        
+        src: /usr/share/easy-rsa/pki/private/{{ client_name }}.key
+        dest: /home/ubuntu/client-configs/keys/
+        remote_src: yes
+
+    - name: Copying {{ client_name }}.crt
+      ansible.builtin.copy:        
+        src: /usr/share/easy-rsa/pki/issued/{{ client_name }}.crt
+        dest: /home/ubuntu/client-configs/keys/
+        remote_src: yes
+    
+    - name: This command will generate the client configuration file
+      ansible.builtin.shell:
+      args:
+        chdir: /usr/share/easy-rsa/
+        cmd: ./make_config.sh {{ client_name }}

@@ -29,3 +29,9 @@ terraform plan
 ```bash
 terraform apply
 ```
+
+Salve os outputs em um gerenciador de texto para que você possa utilizar nos próximos passos.
+
+Após isso, o servidor de openvpn vai estar criado, juntamente com um servidor client que está em outra subnet e servirá para testar o roteamento. 
+
+A próxima etapa está no README.md dentro da pasta ansible-openvpn. 

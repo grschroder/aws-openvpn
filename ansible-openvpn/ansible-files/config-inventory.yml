@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+  become: yes
+  gather_facts: no
+
+  tasks:
+      
+    - name: Add openvpn-server to inventory
+      lineinfile:
+        path: /etc/ansible/hosts
+        line: "[openvpn-server]"
+        create: yes
+        insertafter: EOF
+        state: present
+
+    - name: Add { openvpn_server_ip } to inventory
+      lineinfile:
+        path: /etc/ansible/hosts
+        line: "{{ openvpn_server_ip }}"
+        create: yes
+        insertafter: EOF
+        state: present

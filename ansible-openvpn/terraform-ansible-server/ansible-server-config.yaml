@@ -1,0 +1,24 @@
+#cloud-config
+repo_update: true
+repo_upgrade: all
+hostname: ansible-server
+timezone: "America/Sao_Paulo"
+
+packages:
+ - net-tools
+ - awscli
+ 
+
+runcmd:
+ 
+ - [ sh, -c, "apt-add-repository ppa:ansible/ansible -y" ] 
+ - [ sh, -c, "apt update" ] 
+ - [ sh, -c, "apt install ansible -y" ] 
+ - [ sh, -c, "mkdir -p /etc/ansible/playbooks/files" ] 
+ - [ sh, -c, "aws s3 cp s3://openvpn-ansible-files-042024/add-client.yml /etc/ansible/playbooks/add-client.yml" ]
+ - [ sh, -c, "aws s3 cp s3://openvpn-ansible-files-042024/remove-client.yml /etc/ansible/playbooks/remove-client.yml" ]
+ - [ sh, -c, "aws s3 cp s3://openvpn-ansible-files-042024/config-server.yml /etc/ansible/playbooks/config-server.yml" ]
+ - [ sh, -c, "aws s3 cp s3://openvpn-ansible-files-042024/config-inventory.yml /etc/ansible/playbooks/config-inventory.yml" ]
+ - [ sh, -c, "aws s3 cp s3://openvpn-ansible-files-042024/add-subnet.yml /etc/ansible/playbooks/add-subnet.yml" ]
+ - [ sh, -c, "aws s3 cp s3://openvpn-ansible-files-042024/make_config.sh /etc/ansible/playbooks/files/make_config.sh" ]
+ - [ sh, -c, "aws s3 cp s3://openvpn-ansible-files-042024/base.conf /etc/ansible/playbooks/files/base.conf" ]

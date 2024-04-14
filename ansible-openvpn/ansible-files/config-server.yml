@@ -1,0 +1,18 @@
+---
+- hosts: openvpn-server
+  become: yes
+  gather_facts: no
+
+  tasks:
+
+    - name: Copying base configuration file
+      ansible.builtin.copy:
+        src: /etc/ansible/playbooks/files/base.conf
+        dest: /home/ubuntu/client-configs/base.conf
+
+    - name: Setting OpenVPN Server IP on base configuration file
+      replace:
+        path: /home/ubuntu/client-configs/base.conf
+        regexp: 'my-openvpn-server-ip'
+        replace: '{{ openvpn_server_ip }}'
+        backup: no
